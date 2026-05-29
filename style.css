@@ -1,34 +1,39 @@
+/* Core Styling Rules & Variable Maps */
 :root {
-    /* Default View 3: Tactical Matrix Green Glow */
-    --page-bg: #000000;
-    --radar-bg: #000300;
-    --grid-color: rgba(0, 255, 70, 0.06);
-    --grid-accent: rgba(0, 255, 70, 0.18);
-    --sweep-trail: rgba(0, 150, 30, 0.35);
-    --sweep-edge: #00ff44;
-    --theme-glow: #00ff44;
-    --slider-bg: #00ff44;
+    --page-bg: #000000; /* Stays solid absolute black */
 }
 
-/* Dynamic Classes for switching via JS */
+/* Ver. 1 Cyan/Blue Neon State */
 body.view-1 {
-    --radar-bg: #010105;
-    --grid-color: rgba(0, 200, 255, 0.08);
-    --grid-accent: rgba(0, 200, 255, 0.18);
-    --sweep-trail: rgba(0, 100, 255, 0.35);
+    --radar-bg: #000010;
+    --grid-color: rgba(0, 217, 255, 0.07);
+    --grid-accent: rgba(0, 217, 255, 0.2);
+    --sweep-trail: rgba(0, 80, 255, 0.35);
     --sweep-edge: #00d9ff;
     --theme-glow: #00d9ff;
-    --slider-bg: #00d9ff;
+    --panel-glow-opacity: rgba(0, 217, 255, 0.15);
 }
 
+/* Ver. 2 Crimson Red Neon State */
 body.view-2 {
-    --radar-bg: #030000;
-    --grid-color: rgba(255, 0, 60, 0.06);
-    --grid-accent: rgba(255, 0, 60, 0.18);
+    --radar-bg: #050000;
+    --grid-color: rgba(255, 0, 68, 0.06);
+    --grid-accent: rgba(255, 0, 68, 0.2);
     --sweep-trail: rgba(180, 0, 40, 0.35);
     --sweep-edge: #ff0044;
     --theme-glow: #ff0044;
-    --slider-bg: #ff0044;
+    --panel-glow-opacity: rgba(255, 0, 68, 0.15);
+}
+
+/* Ver. 3 Tactical Matrix Green Neon State */
+body.view-3 {
+    --radar-bg: #000400;
+    --grid-color: rgba(0, 255, 70, 0.06);
+    --grid-accent: rgba(0, 255, 70, 0.2);
+    --sweep-trail: rgba(0, 150, 30, 0.35);
+    --sweep-edge: #00ff44;
+    --theme-glow: #00ff44;
+    --panel-glow-opacity: rgba(0, 255, 70, 0.15);
 }
 
 * {
@@ -42,51 +47,50 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--page-bg);
+    background-color: var(--page-bg) !important; /* Forces solid black everywhere */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
     padding: 20px;
-    transition: background 0.4s ease;
 }
 
-/* Main Container - Fully Mobile Fluid Layout */
+/* Responsive Fluid Wrapper Layout */
 .radar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 25px;
     width: 100%;
-    max-width: 360px; /* Limits container width on desktop */
+    max-width: 360px; /* Perfect desktop limit, handles phones natively */
 }
 
-/* Metallic Outer Bezel */
+/* High-Tech Bezel Frame */
 .radar-bezel {
-    background: #12161a;
-    padding: 12px;
+    background: #111417;
+    padding: 14px;
     border-radius: 50%;
     box-shadow: 
-        inset 0px 4px 8px rgba(255, 255, 255, 0.12),
-        inset 0px -4px 10px rgba(0, 0, 0, 0.8),
-        0px 12px 35px rgba(0, 0, 0, 0.8);
-    border: 1px solid #1c2227;
+        inset 0px 4px 8px rgba(255, 255, 255, 0.1),
+        inset 0px -4px 12px rgba(0, 0, 0, 0.9),
+        0px 15px 40px rgba(0, 0, 0, 0.9);
+    border: 1px solid #1a1e22;
 }
 
-/* Inside Radar Screen - Using viewport width (vw) for accurate phone resizing */
+/* Device Screen Dimension Controls */
 .radar-screen {
     width: 290px;
     height: 290px;
-    max-width: 78vw;  /* Keeps it beautifully inside phone screens */
-    max-height: 78vw; /* Forces a perfect 1:1 circle shape */
+    max-width: 78vw;  /* Keeps design flawless on thin mobile displays */
+    max-height: 78vw; /* Locks ratio into an explicit square circle structure */
     background-color: var(--radar-bg);
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0px 0px 25px rgba(0, 0, 0, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0px 0px 30px rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.01);
     transition: background-color 0.4s ease;
 }
 
-/* Concentric Rings & Crosshairs */
+/* Concentric Target Vectors */
 .grid-lines {
     position: absolute;
     top: 0; left: 0;
@@ -117,7 +121,7 @@ body {
     transform: translateX(-50%);
 }
 
-/* Rotating Radar Beam */
+/* Radar Sweep Line Object */
 .sweep {
     position: absolute;
     top: 0; left: 0;
@@ -125,66 +129,61 @@ body {
     border-radius: 50%;
     background: conic-gradient(
         from 0deg, 
-        transparent 55%, 
+        transparent 50%, 
         var(--sweep-trail) 98%, 
         var(--sweep-edge) 100%
     );
-    animation: spin 3.8s linear infinite;
+    animation: spin-cw 3.8s linear infinite;
 }
 
-@keyframes spin {
+@keyframes spin-cw {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-/* Target Blips/Dots */
+/* Blips System */
 .dot {
     position: absolute;
     width: 6px;
     height: 6px;
     background: var(--sweep-edge);
     border-radius: 50%;
-    box-shadow: 0 0 10px 3px var(--theme-glow);
+    box-shadow: 0 0 12px 4px var(--theme-glow);
     opacity: 0;
-    animation: ping 3.8s linear infinite;
+    animation: ping-fade 3.8s linear infinite;
     transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Timings calibrated exactly to the 3.8s sweep rotation loop */
+/* Timings mapped exactly with 3.8s intervals */
 .dot-1 { top: 24%; left: 70%; animation-delay: 0.5s; }
 .dot-2 { top: 56%; left: 82%; animation-delay: 1.1s; }
 .dot-3 { top: 76%; left: 44%; animation-delay: 1.7s; }
 .dot-4 { top: 54%; left: 20%; animation-delay: 2.4s; }
 .dot-5 { top: 30%; left: 32%; animation-delay: 3.1s; }
 
-@keyframes ping {
+@keyframes ping-fade {
     0% { opacity: 0; transform: scale(0.6); }
-    4% { opacity: 1; transform: scale(1.3); }
+    4% { opacity: 1; transform: scale(1.4); }
     18% { opacity: 0.5; transform: scale(1); }
     35% { opacity: 0; }
     100% { opacity: 0; }
 }
 
-/* Premium Segmented Controller Shell */
+/* Premium Segmented Switch Interface */
 .toggle-container {
-    background: #0d0f12;
+    background: #090b0d;
     padding: 4px;
     border-radius: 30px;
-    border: 1px solid #1a1f26;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.6);
+    border: 1px solid #171c22;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.8);
 }
-
 .toggle-segmented {
     position: relative;
     display: flex;
     width: 210px;
     height: 30px;
 }
-
-.toggle-segmented input {
-    display: none;
-}
-
+.toggle-segmented input { display: none; }
 .toggle-segmented label {
     flex: 1;
     z-index: 2;
@@ -194,68 +193,100 @@ body {
     justify-content: center;
     font-size: 11px;
     font-weight: bold;
-    color: #616f85;
+    color: #556275;
     transition: color 0.3s ease;
 }
-
 .toggle-segmented input:checked + label {
     color: #000000;
 }
-
-/* Sliding active indicator capsule */
 .glider {
     position: absolute;
     height: 100%;
-    width: 70px; /* 210px total / 3 tabs */
+    width: 70px;
     background-color: var(--slider-bg);
     border-radius: 25px;
     z-index: 1;
-    transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1), background-color 0.4s ease;
-    box-shadow: 0 0 10px var(--theme-glow);
+    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.15), background-color 0.4s ease;
+    box-shadow: 0 0 12px var(--theme-glow);
 }
+body.view-1 .glider { background-color: #00d9ff; }
+body.view-2 .glider { background-color: #ff0044; }
+body.view-3 .glider { background-color: #00ff44; }
 
 #v1:checked ~ .glider { transform: translateX(0); }
 #v2:checked ~ .glider { transform: translateX(70px); }
 #v3:checked ~ .glider { transform: translateX(140px); }
 
-/* Glowing UI Credit Block Panel */
-.lighting-info-block {
+
+/* ULTRA-ATTRACTIVE LIGHTING CREDIT PANEL */
+.lighting-info-panel {
     width: 100%;
     text-align: center;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 12px;
-    padding: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    background: #040507;
+    border-radius: 14px;
+    padding: 16px;
+    /* High glow border frame tracking theme state */
+    border: 1px solid var(--theme-glow);
+    box-shadow: 
+        0 0 15px var(--panel-glow-opacity),
+        inset 0 0 15px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+    animation: panel-pulse 3s infinite alternate ease-in-out;
+    transition: border 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Pulsing container glow engine */
+@keyframes panel-pulse {
+    0% { box-shadow: 0 0 10px var(--panel-glow-opacity), inset 0 0 10px rgba(0,0,0,0.6); }
+    100% { box-shadow: 0 0 20px var(--panel-glow-opacity), inset 0 0 15px var(--panel-glow-opacity); }
+}
+
+.prefix-tag {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--theme-glow);
+    margin-bottom: 8px;
+    opacity: 0.6;
+    font-weight: bold;
+    text-shadow: 0 0 3px var(--theme-glow);
+    transition: color 0.4s ease, text-shadow 0.4s ease;
 }
 
 .credit-text {
-    font-size: 12px;
+    font-size: 12.5px;
     line-height: 1.6;
     font-family: monospace;
-    color: #8a99ad;
+    color: #79889c;
 }
 
-/* Glowing Neon Text Engine */
+/* Dynamic Neon Glowing Sign Typography */
 .dev-name {
     font-weight: bold;
-    font-size: 13.5px;
+    font-size: 14px;
     color: #ffffff;
-    letter-spacing: 0.3px;
-    text-shadow: 0 0 8px var(--theme-glow);
+    letter-spacing: 0.4px;
+    /* Deep multi-layered neon glow text-shadows */
+    text-shadow: 
+        0 0 4px #ffffff,
+        0 0 8px var(--theme-glow),
+        0 0 15px var(--theme-glow);
     transition: text-shadow 0.4s ease;
 }
 
 .dept-info, .univ-info {
+    display: block;
     opacity: 0.85;
+    font-size: 12px;
 }
 
 .copy-info {
     font-size: 11px;
     color: var(--theme-glow);
     display: block;
-    margin-top: 4px;
+    margin-top: 6px;
     font-weight: bold;
-    text-shadow: 0 0 4px var(--theme-glow);
+    text-shadow: 0 0 5px var(--theme-glow);
     transition: color 0.4s ease, text-shadow 0.4s ease;
 }
